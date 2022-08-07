@@ -64,8 +64,11 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
-        // If we have a successful request
-        authCtx.login(data.idToken);
+        const expirationTime = new Date(
+          new Date().getTime() + +data.expiresIn * 1000
+        );
+        // If we have a successful request - sends token and expiration time
+        authCtx.login(data.idToken, expirationTime.toISOString());
         // For redirection
         history.replace("/");
       })
